@@ -2,6 +2,7 @@ import axiosWrapper from '@/lib/axiosWrapper'
 import useParseSdkEntity from '@/use/ParseSdkEntity.js'
 import store from '@/store'
 import useWeb3Connect from '@/use/Web3Connect'
+import { appBaseUrl } from '@/constant/config/Env'
 
 const ParseSdkEntity = useParseSdkEntity()
 const Web3Connect = useWeb3Connect()
@@ -32,8 +33,8 @@ const removeDuplicate = (tokens) => {
 export const getAllTokens = async () => {
 
     const urls = [
-        '/tokens/pancakeswap-extend.json',
-        '/tokens/pancakeswap-top-100.json',
+        `${appBaseUrl}/tokens/pancakeswap-extend.json`,
+        `${appBaseUrl}/tokens/pancakeswap-top-100.json`,
     ]
 
     let tokens = []
@@ -49,7 +50,7 @@ export const getAllTokens = async () => {
 
 export const getPrimaryTokens = async () => {
 
-    const tokens = (await getToken('/tokens/pancakeswap-default.json')).filter((token) => {
+    const tokens = (await getToken(`${appBaseUrl}/tokens/pancakeswap-default.json`)).filter((token) => {
         return parseInt(token.chainId) === parseInt(chainId.value)
     })
 

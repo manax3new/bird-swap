@@ -8,10 +8,10 @@ export const BLOCK_EXPLORER_BASE_URL = {
     [ChainId.TESTNET]: 'https://testnet.bscscan.com'
 }
 
-
-
 export const getEnv = () => {
     return {
         chainId: CHAIN_ID
     }
 }
+
+export const appBaseUrl = process.env.NODE_ENV === "production" ? process.env.VUE_APP_BASE_URL : ''

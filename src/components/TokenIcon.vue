@@ -8,6 +8,7 @@
 import { getTokenInfo } from '@/use/TokenList'
 import {ETHER} from '@pancakeswap/sdk'
 import { toRaw, computed } from 'vue'
+import { appBaseUrl } from '@/constant/config/Env'
 
 export default {
     props: [
@@ -20,7 +21,7 @@ export default {
                 return ''
             }
             if(toRaw(props.token) === ETHER) {
-                return '/images/BNBTokenIcon.png'
+                return `${appBaseUrl}/images/BNBTokenIcon.png`
             }
             const tokenInfo = getTokenInfo(props.token.address) 
             if(!tokenInfo) {
