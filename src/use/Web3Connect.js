@@ -41,7 +41,7 @@ export default () => {
             app.config.globalProperties.$ethereum = window.ethereum
             app.config.globalProperties.$web3 = new Web3(window.ethereum)
 
-            await window.ethereum.enable()
+            // await window.ethereum.enable()
 
             const provider = new ethers.providers.Web3Provider(window.ethereum)
             const signer = provider.getSigner()
