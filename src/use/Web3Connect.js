@@ -4,6 +4,7 @@ import { computed } from 'vue'
 import { app } from '@/main'
 import { getEnv } from '@/constant/config/Env'
 import { ethers } from "ethers"
+import getRpcUrl from '@/utils/getRpcUrl'
 
 export default () => {
 
@@ -15,7 +16,7 @@ export default () => {
     })
     const chainId = computed(() => {
         const { chainId: chainIdFromConfig } = getEnv()
-        return network.value.id ? network.value.id : chainIdFromConfig
+        return (network.value.id && account.value.address) ? network.value.id : chainIdFromConfig
     })
 
     const getWeb3 = () => {
@@ -59,8 +60,11 @@ export default () => {
             app.config.globalProperties.$web3 = new Web3(window.web3.currentProvider)
         } else {
             console.log("No web3? You should consider trying MetaMask!")
+            const RPC_URL = getRpcUrl()
+            // https://data-seed-prebsc-1-s3.binance.org:8545
+            // https://kovan.infura.io/
             app.config.globalProperties.$web3 = new Web3(
-                new Web3.providers.HttpProvider("https://kovan.infura.io/")
+                new Web3.providers.HttpProvider(RPC_URL)
             )
         }
     }
