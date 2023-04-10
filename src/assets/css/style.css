@@ -115,3 +115,39 @@ a:-webkit-any-link {
     font-weight: bold;
     color: #0687a5;
 }
+
+.box-wrapper{
+    text-align: center;
+    padding-top: 20px !important;
+}
+
+.box-wrapper h1{
+    font-size: 3.5em;
+    font-weight: 600;
+    color: #0d4d81;
+    margin-bottom: 10px;
+}
+
+.text_small{
+    font-size: 18px;
+     color: #8bb4d5;
+}
+
+.bt-lg{
+    padding: 25px !important;
+    /* height: 50px !important; */
+    font-size: 18px !important;
+    width: 250px !important;
+    background: rgb(52,177,210);
+    background: linear-gradient(25deg, rgba(52,177,210,1) 0%, rgba(76,250,255,1) 100%);
+    border: 0px !important;
+}
+
+.bg-home{
+    position: relative;
+    margin-bottom: -100px;
+    margin-top: -60px;
+}
+.bg-home img{
+   width: 30%;
+}

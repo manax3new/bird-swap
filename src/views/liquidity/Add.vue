@@ -70,7 +70,7 @@
                 </div>
             </div>
 
-            <div class="price-card" v-if="selectedTokenA && selectedTokenB">
+            <div class="price-card" v-if="selectedTokenA && selectedTokenB" style="margin-top: 10px;">
                 <div>
                     Prices and pool share
                 </div>
@@ -119,7 +119,7 @@
                 </div>
             </div>
 
-            <div>
+            <div style="margin-top: 15px;">
                 <LiquidityCardPreview v-if="state.pair" :pair="state.pair"></LiquidityCardPreview>
             </div>
         </el-card>
@@ -145,13 +145,13 @@
                     <span v-if="!noLiquidity">Pool Tokens</span>
                 </div>
 
-                <div v-if="!noLiquidity">
+                <div v-if="!noLiquidity" style="margin-bottom: 15px;">
                     Output is estimated. If the price changes by more than {{allowedSlippagePercentFormat(allowedSlippage)}}% your transaction will revert.
                 </div>
 
                 <div>
                     <div class="flex justify-content-space-between">
-                        <div>{{selectedTokenA.symbol}} Deposited</div>
+                        <div><strong>{{selectedTokenA.symbol}} Deposited</strong></div>
                         <div class="flex align-items-center">
                             <el-space :size="2">
                                 <TokenIcon :size="18" :token="selectedTokenA"></TokenIcon>
@@ -160,7 +160,7 @@
                         </div>
                     </div>
                     <div class="flex justify-content-space-between">
-                        <div>{{selectedTokenB.symbol}} Deposited</div>
+                        <div><strong>{{selectedTokenB.symbol}} Deposited</strong></div>
                         <div class="flex align-items-center">
                             <el-space :size="2">
                                 <TokenIcon :size="18" :token="selectedTokenB"></TokenIcon>
@@ -169,7 +169,7 @@
                         </div>
                     </div>
                     <div class="flex justify-content-space-between">
-                        <div>Rates</div>
+                        <div><strong>Rates</strong></div>
                         <div>1 {{selectedTokenA.symbol}} = {{priceBPerA}} {{selectedTokenB.symbol}}</div>
                     </div>
                     <div class="flex justify-content-space-between">
@@ -177,7 +177,7 @@
                         <div>1 {{selectedTokenB.symbol}} = {{priceAPerB}} {{selectedTokenA.symbol}}</div>
                     </div>
                     <div class="flex justify-content-space-between">
-                        <div>Share of Pool:</div>
+                        <div><strong>Share of Pool:</strong></div>
                         <div>{{poolTokenPercentageFormat(poolTokenPercentage)}}%</div>
                     </div>
                 </div>
