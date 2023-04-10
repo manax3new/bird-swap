@@ -71,6 +71,7 @@
                 </div>
             </div>
             <div>
+                <span style="color: rgb(135 179 225);">Details</span>
                 <el-button v-if="state.isShowDetail" @click="toggleShowDetail" type="primary" :icon="ArrowUp" circle link />
                 <el-button v-else :icon="ArrowDown" @click="toggleShowDetail" type="primary" circle link />
             </div>

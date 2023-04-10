@@ -1,12 +1,12 @@
 <template>
 <div v-if="token" @click="select" class="TokenListItem" :class="{'disabled': disabled}">
     <div style="display: flex; align-items: center;">
-        <div style="padding: 4px;">
-            <TokenIcon size="small" :token="token"></TokenIcon>
+        <div style="padding: 4px; margin-right: 5px;">
+            <TokenIcon size="medium" :token="token"></TokenIcon>
         </div>
         <div v-if="token === ETHER">
             <div>
-                BNB
+               <strong>BNB</strong>
             </div>
             <div>
                 BNB
@@ -14,7 +14,7 @@
         </div>
         <div v-else>
             <div>
-                {{token.symbol}}
+                <strong>{{token.symbol}}</strong>
             </div>
             <div class="flex">
                 <div v-if="token.isAddedByUser && pageMode !== 'manage'">

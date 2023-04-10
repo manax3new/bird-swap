@@ -1,6 +1,6 @@
 <template>
 <div class="SelectTokenButton">
-    <el-button @click="openSelectTokenDialog" class="custom-button-expand">
+    <el-button @click="openSelectTokenDialog" class="custom-button-expand" style="width: 100%;">
         <div style="display: flex; align-items: center;">
             <TokenIcon size="small" :token="token"></TokenIcon>
             <div style="padding-left: 4px;">
@@ -19,7 +19,7 @@
     width="50%">
         <template #header="{titleId, titleClass}">
             <div class="flex">
-                <el-button 
+                <el-button
                 v-if="data.selectTokenFragmentPage === 'manage'" 
                 @click="() => { data.selectTokenFragmentPage = 'search' }"
                 :icon="Back" 

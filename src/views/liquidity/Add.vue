@@ -1,6 +1,6 @@
 <template>
     <div class="AddLiquidity flex-center">
-        <el-card>
+        <el-card class="card-fix">
             <div class="flex align-items-center">
                 <el-space>
                     <router-link :to="{name: 'Liquidity'}">
@@ -8,15 +8,16 @@
                     </router-link>
                     <div>
                         <div class="text-x-large text-bold">Add Liquidity</div>
-                        <div class="vertical-space-10"></div>
+                        <!--<div class="vertical-space-10"></div>-->
                         <div class="flex">
+
+                            <div class="text-sm">Add liquidity to receive LP tokens</div>
                             <el-tooltip
-                                effect="dark"
-                                content="Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool."
+                                    effect="dark"
+                                    content="Liquidity providers earn a 0.17% trading fee on all trades made for that token pair, proportional to their share of the liquidity pool."
                             >
                                 <el-icon><QuestionFilled /></el-icon>
                             </el-tooltip>
-                            <div>Add liquidity to receive LP tokens</div>
                         </div>
                     </div>
                 </el-space>
@@ -34,7 +35,7 @@
                     <div style="margin-right: 12px;">
                         <TokenMiscTools :token="selectedTokenA"></TokenMiscTools>
                     </div>
-                    <div>Balance: {{tokenABalance ? tokenABalance.toSignificant(6) : 0}}</div>
+                    <div class="text-blue">Balance: {{tokenABalance ? tokenABalance.toSignificant(6) : 0}}</div>
                 </div>
                 <div class="vertical-space-10"></div>
                 <el-input 
@@ -47,7 +48,6 @@
                     <el-button v-show="canMaxTokenA" @click="maxTokenA" link type="primary">Max</el-button>
                 </div>
             </div>
-            <br/>
             <div class="text-align-center">+</div>
             <br/>
             <div>
@@ -56,7 +56,7 @@
                     <div style="margin-right: 12px;">
                         <TokenMiscTools :token="selectedTokenB"></TokenMiscTools>
                     </div>
-                    <div>Balance: {{tokenBBalance ? tokenBBalance.toSignificant(6) : 0}}</div>
+                    <div class="text-blue">Balance: {{tokenBBalance ? tokenBBalance.toSignificant(6) : 0}}</div>
                 </div>
                 <div class="vertical-space-10"></div>
                 <el-input 
@@ -69,7 +69,7 @@
                     <el-button v-show="canMaxTokenB" @click="maxTokenB" link type="primary">Max</el-button>
                 </div>
             </div>
-            <br/>
+
             <div class="price-card" v-if="selectedTokenA && selectedTokenB">
                 <div>
                     Prices and pool share
@@ -92,7 +92,7 @@
                     </el-space>
                 </div>
             </div>
-            <br>
+
             <div v-if="selectedTokenA && selectedTokenB">
                 <div>
                     <ApproveButton 
@@ -118,7 +118,7 @@
                     <el-button class="custom-button-100percent" :disabled="!canSupply || onSupply" @click="toSupply" type="primary">{{supplyButtonLabel}}</el-button>
                 </div>
             </div>
-            <br>
+
             <div>
                 <LiquidityCardPreview v-if="state.pair" :pair="state.pair"></LiquidityCardPreview>
             </div>
@@ -144,11 +144,11 @@
                 <div class="text-large text-bold">{{selectedTokenA.symbol}}/{{selectedTokenB.symbol}} 
                     <span v-if="!noLiquidity">Pool Tokens</span>
                 </div>
-                <br>
+
                 <div v-if="!noLiquidity">
                     Output is estimated. If the price changes by more than {{allowedSlippagePercentFormat(allowedSlippage)}}% your transaction will revert.
                 </div>
-                <br>
+
                 <div>
                     <div class="flex justify-content-space-between">
                         <div>{{selectedTokenA.symbol}} Deposited</div>

@@ -1,10 +1,10 @@
 <template>
 <div class="Swap flex-center">
-    <el-card>
+    <el-card class="card-fix">
         <div class="flex justify-content-space-between">
             <div>
-                <div class="text-x-large text-bold">Swap</div>
-                <div>Trade tokens in an instant</div>
+                <div class="text-x-large text-bold"><el-icon><Sort /></el-icon> Swap</div>
+                <div class="text-sm">Trade tokens in an instant</div>
             </div>
             <div class="flex align-items-center">
                 <SettingButton></SettingButton>
@@ -23,7 +23,7 @@
                 <div style="margin-right: 12px;">
                     <TokenMiscTools :token="form.selectedTokenA"></TokenMiscTools>
                 </div>
-                <div>Balance: {{state.tokenABalance ? state.tokenABalance.toSignificant(6) : 0}}</div>
+                <div class="text-blue">Balance: {{state.tokenABalance ? state.tokenABalance.toSignificant(6) : 0}}</div>
             </div>
             <div class="vertical-space-10"></div>
             <el-input 
@@ -59,7 +59,7 @@
                 <div style="margin-right: 12px;">
                     <TokenMiscTools :token="form.selectedTokenB"></TokenMiscTools>
                 </div>
-                <div>Balance: {{state.tokenBBalance ? state.tokenBBalance.toSignificant(6) : 0}}</div>
+                <div class="text-blue">Balance: {{state.tokenBBalance ? state.tokenBBalance.toSignificant(6) : 0}}</div>
             </div>
             <div class="vertical-space-10"></div>
             <el-input 
@@ -74,7 +74,7 @@
         </div>
         <div class="vertical-space-10"></div>
         <div class="flex justify-content-space-between">
-            <div>
+            <div class="text-bold">
                 Price
             </div>
             <div class="flex align-items-center">
@@ -358,6 +358,7 @@ export default {
         FormattedPriceImpact,
         WarningFilled,
         TokenMiscTools,
+        Sort
     },
     setup() {
 

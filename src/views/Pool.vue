@@ -1,13 +1,13 @@
 <template>
-<div class="Pool">
+<div class="Pool wrapper-content">
     <h1>
         Pools
     </h1>
-    <h3>
+    <h3 class="text-sm">
         Just stake some tokens to earn.
-        <br/>
         High APR, low risk.
     </h3>
+    <div class="el-divider el-divider--horizontal" role="separator" style="--el-border-style:solid;"><!--v-if--></div>
     <div class="flex justify-content-space-between">
         <div class="flex align-items-center">
             <div>
@@ -23,7 +23,7 @@
                 Staked only
             </div>
             <div class="horizontal-space-5"></div>
-            <div>
+            <div style="margin-right: 5px;">
                 <el-button @click="() => { filter.isFinished = false }" :type="filter.isFinished ? '' : 'primary'" round>Live</el-button>
             </div>
             <div class="horizontal-space-2"></div>
@@ -33,9 +33,9 @@
         </div>
         <div class="flex align-items-center">
             <div>
-                <div class="text-small">
+                <span class="text-small text-bold">
                     SORT BY
-                </div>
+                </span>
                 <el-select v-model="filter.sortOption" placeholder="Select">
                     <el-option
                     v-for="item in SORT_BY_OPTIONS"
@@ -46,17 +46,18 @@
                 </el-select>
             </div>
             <div class="horizontal-space-5"></div>
+            <span class="text-small text-bold" style="margin-right: 5px;">
+                SEARCH
+            </span>
             <div>
-                <div class="text-small">
-                    SEARCH
-                </div>
+
                 <el-input v-model="filter.keyword"></el-input>
             </div>
         </div>
     </div>
     <div class="vertical-space-10"></div>
     <div class="vertical-space-10"></div>
-    <div>
+    <div class="wrapper-table">
         <div v-for="(pool, key) of chosenPools" :key="key">
             <ItemList :pool="pool"></ItemList>
             <div class="vertical-space-10"></div>

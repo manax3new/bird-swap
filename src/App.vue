@@ -1,11 +1,11 @@
 <template>
     <div id="nav" class="flex align-items-center justify-content-space-between">
         <el-space>
-            <router-link to="/">Home</router-link> |
-            <router-link to="/about">About</router-link> |
-            <router-link to="/liquidity">Liquidity</router-link> |
-            <router-link to="/swap">Swap</router-link> |
-            <router-link to="/farm">Farms</router-link> |
+            <router-link to="/">Home</router-link>
+            <!--<router-link to="/about">About</router-link>-->
+            <router-link to="/liquidity">Liquidity</router-link>
+            <router-link to="/swap">Swap</router-link>
+            <router-link to="/farm">Farms</router-link>
             <router-link to="/pool">Pools</router-link>
         </el-space>
         <div class="flex align-items-center">
@@ -33,6 +33,7 @@ import { onMounted, ref } from 'vue'
 import ConnectWallet from '@/components/ConnectWallet'
 import { bnbBalanceFormat } from '@/lib/utils'
 import BigNumber from 'bignumber.js'
+
 
 export default {
 
@@ -73,10 +74,13 @@ export default {
 </script>
 
 <style lang="scss">
+
+    @import url('https://fonts.googleapis.com/css?family=Poppins:wght@200;300;400;500;600;700;800;900');
 body {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background-color: #eef6f9;
+    font-family: 'Poppins', sans-serif;
 }
 #app {
     // text-align: center;
@@ -103,7 +107,7 @@ body {
     text-align: unset!important;
 }
 .custom-button-expand {
-    width: 200px;
+    width: 290px;
 }
 .custom-button-expand span{
     width: 100%;
@@ -204,3 +208,5 @@ body {
 }
 
 </style>
+
+<style src="@/assets/css/style.css"></style>

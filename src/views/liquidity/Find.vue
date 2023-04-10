@@ -1,11 +1,11 @@
 <template>
     <div class="Find">
-        <el-card>
+        <el-card class="card-fix">
             <router-link :to="{name: 'Liquidity'}">
                 <el-button :icon="Back" circle></el-button>
             </router-link>
-            <h1>Import Pool</h1>
-            <h3>Import an existing pool</h3>
+            <h2 style="margin-bottom: 0px;text-align: center;">Import Pool</h2>
+            <h3 class="text-sm" style="text-align: center;margin: 0px 0px 15px 0px;">Import an existing pool</h3>
             <div>
                 <SelectTokenButton @selectToken="selectTokenAHandle" :token="data.tokenA" :pairToken="data.tokenB"></SelectTokenButton>
             </div>
@@ -24,7 +24,7 @@
                     <div v-if="data.poolData">
                         <LiquidityCardPreview :pair="data.poolData"></LiquidityCardPreview>
                         <br>
-                        <div>
+                        <div style="text-align: center;">
                             <el-button @click="addPair" type="primary" plain>Manage this pool</el-button>
                         </div>
                     </div>

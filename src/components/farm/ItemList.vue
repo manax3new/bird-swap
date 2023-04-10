@@ -6,12 +6,12 @@
                 <div v-if="isStaked" class="text-small text-primary">
                     FARMING
                 </div>
-                <div>
+                <div class="text-bold fnt-16">
                     {{farm.farm.label}}
                 </div>
             </div>
             <div>
-                <div class="text-small">
+                <div class="text-small text-bold">
                     Earned
                 </div>
                 <div>
@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div>
-                <div class="text-small">
+                <div class="text-small text-bold">
                     APR
                 </div>
                 <div>
@@ -27,7 +27,7 @@
                 </div>
             </div>
             <div>
-                <div class="flex align-items-center text-small">
+                <div class="flex align-items-center text-small text-bold">
                     <div>
                         Liquidity
                     </div>
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <div>
-                <div class="flex align-items-center text-small">
+                <div class="flex align-items-center text-small text-bold">
                     <div>
                         Multipiler
                     </div>
@@ -73,6 +73,7 @@
                 </div>
             </div>
             <div>
+                <span style="color: rgb(135 179 225);">Details</span>
                 <el-button v-if="state.isShowDetail" @click="toggleShowDetail" type="primary" :icon="ArrowUp" circle link />
                 <el-button v-else :icon="ArrowDown" @click="toggleShowDetail" type="primary" circle link />
             </div>

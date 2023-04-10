@@ -5,8 +5,8 @@
             <el-input placeholder="Search name or paste address" v-model="data.keyword"></el-input>
         </div>
         <br>
-        <div>
-            Common bases 
+        <div style="margin-bottom: 15px;">
+            Common bases
             <el-tooltip
                 effect="dark"
                 content="These tokens are commonly paired with other tokens."

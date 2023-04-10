@@ -1,6 +1,6 @@
 <template>
 <div class="ConnectWallet">
-    <el-button @click="connect" type="success" :plain="isConnect">
+    <el-button @click="connect" type="primary" :plain="isConnect">
         {{ label }}
     </el-button>
 </div>

@@ -1,0 +1,117 @@
+
+.el-card__body, .el-card {
+    border-radius: 20px !important;
+}
+
+.el-card__body {
+    border: solid 1px #8cc9f9;
+    font-size: 14px;
+}
+
+.el-button {
+    font-family: 'Poppins', sans-serif;
+    height: 38px !important;
+    border-radius: 20px !important;
+}
+
+.el-button.is-circle {
+    height: auto !important;
+}
+
+#nav a {
+    padding: 7px;
+    color: #50677e;
+}
+
+#nav {
+    padding: 20px;
+}
+
+a:-webkit-any-link {
+    text-decoration: unset !important;
+}
+
+#nav a.router-link-exact-active {
+    color: #3662F2 !important;
+}
+
+.ConnectWallet > .el-button {
+    height: 40px !important;
+    border-radius: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+}
+
+.el-input__wrapper {
+    height: 40px !important;
+    border-radius: 20px !important;
+}
+
+.text-x-large {
+    font-size: 18px;
+}
+
+.text-sm {
+    font-size: 13px;
+    color: #81898f;
+}
+
+.text-blue {
+    color: #2c9cbf;
+}
+
+#nav {
+    margin-bottom: 20px;
+}
+
+.wrapper-content {
+    padding: 0px 25px;
+}
+
+.wrapper-content h1 {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 0px;
+}
+
+.wrapper-content h3 {
+    margin: 0px;
+    font-size: 14px;
+}
+
+.el-dialog {
+    border-radius: 20px !important;
+}
+
+.wrapper-table {
+    background: #fff;
+    padding: 20px 20px 10px 20px;
+    border-radius: 20px;
+    border: solid 1px #ddd;
+}
+
+.item-list-body {
+    background-color: #edf2f3 !important;
+    border: 0px !important;
+    border-radius: 0px 0px 20px 20px;
+}
+
+.el-input__inner {
+    font-family: Poppins;
+}
+
+.price-card{
+    border: solid 1px #b9c0c5 !important;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.card-fix{
+    width: 450px;
+}
+
+.fnt-16{
+    font-size: 16px;
+    font-weight: bold;
+    color: #0687a5;
+}

@@ -7,7 +7,7 @@
                     <el-space :size="2">
                         <TokenIcon :size="18" :token="data.currency0"></TokenIcon>
                         <TokenIcon :size="18" :token="data.currency1"></TokenIcon>
-                        <div>
+                        <div class="text-bold">
                             {{data.currency0.symbol}}/{{data.currency1.symbol}} LP
                         </div>
                     </el-space>
@@ -19,17 +19,17 @@
             </div>
             <div class="vertical-space-10"></div>
             <div class="flex justify-content-space-between">
-                <div>Share of Pool:</div>
+                <div class="text-bold">Share of Pool:</div>
                 <div>{{poolTokenPercentageFormat(data.poolTokenPercentage)}}%</div>
             </div>
             <div class="vertical-space-10"></div>
             <div v-if="data.currency0" class="flex justify-content-space-between">
-                <div>Pooled {{data.currency0.symbol}}:</div>
+                <div class="text-bold">Pooled {{data.currency0.symbol}}:</div>
                 <div>{{tokenBalanceFormat(data.token0Deposited)}}</div>
             </div>
             <div class="vertical-space-10"></div>
             <div v-if="data.currency1" class="flex justify-content-space-between">
-                <div>Pooled {{data.currency1.symbol}}:</div>
+                <div class="text-bold">Pooled {{data.currency1.symbol}}:</div>
                 <div>{{tokenBalanceFormat(data.token1Deposited)}}</div>
             </div>
         </el-card>

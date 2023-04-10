@@ -1,10 +1,10 @@
 <template>
     <div class="Pool flex-center">
-        <el-card>
+        <el-card class="card-fix">
             <div class="flex justify-content-space-between">
                 <div>
-                    <div class="text-x-large text-bold">Your Liquidity</div>
-                    <div>Remove liquidity to receive tokens back</div>
+                    <div class="text-x-large text-bold"><el-icon><Coin /></el-icon> Liquidity</div>
+                    <div class="text-sm">Remove liquidity to receive tokens back</div>
                 </div>
                 <div>
                     <SettingButton></SettingButton>
@@ -39,7 +39,8 @@
 <script>
 
 import store from '@/store'
-import { onMounted, ref } from 'vue'
+import { onMounted, ref} from 'vue'
+import { Coin } from '@element-plus/icons-vue'
 import { getAllTokens } from '@/use/TokenList'
 import { getAllPairs } from '@/use/PairList'
 import useParseSdkEntity from '@/use/ParseSdkEntity'
@@ -54,6 +55,7 @@ export default {
     components: {
         LiquidityCard,
         SettingButton,
+        Coin
     },
     setup() {
         const Web3Connect = useWeb3Connect()

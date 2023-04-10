@@ -1,10 +1,10 @@
 <template>
 <div class="Remove flex-center">
     <div>
-        <el-card v-if="!isLoading && form.currencyA && form.currencyB">
+        <el-card class="card-fix" v-if="!isLoading && form.currencyA && form.currencyB">
             <BackButton></BackButton>
-            <h1>Remove {{form.currencyA.symbol}}-{{form.currencyB.symbol}} liquidity</h1>
-            <h3>To receive {{form.currencyA.symbol}} and {{form.currencyB.symbol}}</h3>
+            <h2 style="margin-bottom: 0px;text-align: center;">Remove {{form.currencyA.symbol}}-{{form.currencyB.symbol}} liquidity</h2>
+            <h3 class="text-sm" style="margin: 0px;text-align: center;">To receive {{form.currencyA.symbol}} and {{form.currencyB.symbol}}</h3>
             <el-divider />
             <div class="flex justify-content-space-between align-items-center">
                 <div>
@@ -31,7 +31,7 @@
                 </el-icon>
             </div>
             <br>
-            <div>
+            <div class="text-bold" style="margin-bottom: 10px;">
                 RECEIVE
             </div>
             <div>
@@ -40,7 +40,7 @@
                         <div class="flex align-items-center">
                             <el-space :size="2">
                                 <TokenIcon size="small" :token="form.currencyA"></TokenIcon>
-                                <div>{{form.currencyA.symbol}}</div>
+                                <div class="text-bold">{{form.currencyA.symbol}}</div>
                             </el-space>
                         </div>
                         <div style="text-align: right;">
@@ -54,7 +54,7 @@
                         <div class="flex align-items-center">
                             <el-space :size="2">
                                 <TokenIcon size="small" :token="form.currencyB"></TokenIcon>
-                                <div>{{form.currencyB.symbol}}</div>
+                                <div class="text-bold">{{form.currencyB.symbol}}</div>
                             </el-space>
                         </div>
                         <div style="text-align: right;">
@@ -67,7 +67,7 @@
                 </el-card>
             </div>
             <br>
-            <div>
+            <div class="text-bold" style="margin-bottom: 10px;">
                 PRICE
             </div>
             <div>

@@ -1,11 +1,12 @@
 <template>
-<div class="Farm">
+<div class="Farm wrapper-content">
     <h1>
         Farms
     </h1>
-    <h3>
+    <h3 class="text-sm">
         Stake LP tokens to earn.
     </h3>
+    <div class="el-divider el-divider--horizontal" role="separator" style="--el-border-style:solid;"><!--v-if--></div>
     <div class="flex justify-content-space-between">
         <div class="flex align-items-center">
             <div>
@@ -21,7 +22,7 @@
                 Staked only
             </div>
             <div class="horizontal-space-5"></div>
-            <div>
+            <div style="margin-right: 5px;">
                 <el-button @click="() => { filter.isFinished = false }" :type="filter.isFinished ? '' : 'primary'" round>Live</el-button>
             </div>
             <div class="horizontal-space-2"></div>
@@ -30,10 +31,10 @@
             </div>
         </div>
         <div class="flex align-items-center">
-            <div>
-                <div class="text-small">
+            <div class="">
+                <span class="text-small text-bold">
                     SORT BY
-                </div>
+                </span>
                 <el-select v-model="filter.sortOption" placeholder="Select">
                     <el-option
                     v-for="item in SORT_BY_OPTIONS"
@@ -44,10 +45,10 @@
                 </el-select>
             </div>
             <div class="horizontal-space-5"></div>
-            <div>
-                <div class="text-small">
+            <span class="text-small text-bold" style="margin-right: 5px;">
                     SEARCH
-                </div>
+                </span>
+            <div>
                 <el-input v-model="filter.keyword"></el-input>
             </div>
         </div>
@@ -57,7 +58,7 @@
     <!-- <pre>
         {{rowData}}
     </pre> -->
-    <div>
+    <div class="wrapper-table">
         <div v-for="(farm, key) of rowData" :key="key">
             <ItemList :farm="farm"></ItemList>
             <div class="vertical-space-10"></div>
