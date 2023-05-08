@@ -3,8 +3,11 @@
     border-radius: 20px !important;
 }
 
+.el-card{
+    border: solid 1px #8cc9f9 !important;
+}
+
 .el-card__body {
-    border: solid 1px #8cc9f9;
     font-size: 14px;
 }
 
@@ -150,4 +153,8 @@ a:-webkit-any-link {
 }
 .bg-home img{
    width: 30%;
+}
+
+.box-container{
+    margin: 50px;
 }

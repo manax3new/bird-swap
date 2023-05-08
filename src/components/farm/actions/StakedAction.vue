@@ -55,12 +55,12 @@
     >
         <div>
             <el-card>
-                <div class="flex justify-content-space-between">
+                <div class="flex justify-content-space-between" style="padding: 5px 15px;">
                     <div>
-                        Stake
+                        <strong>Stake</strong>
                     </div>
                     <div>
-                        Balance: {{modalBalanceDisplay(depositModalFullBalance)}}
+                        <strong>Balance: {{modalBalanceDisplay(depositModalFullBalance)}}</strong>
                     </div>
                 </div>
                 <div class="vertical-space-10"></div>
@@ -96,12 +96,12 @@
     >
         <div>
             <el-card>
-                <div class="flex justify-content-space-between">
+                <div class="flex justify-content-space-between" style="padding: 5px 15px;">
                     <div>
-                        Unstake
+                       <strong>Unstake</strong>
                     </div>
                     <div>
-                        Balance: {{modalBalanceDisplay(withdrawModalFullBalance)}}
+                        <strong>  Balance: {{modalBalanceDisplay(withdrawModalFullBalance)}}</strong>
                     </div>
                 </div>
                 <div class="vertical-space-10"></div>

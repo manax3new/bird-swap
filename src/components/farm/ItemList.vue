@@ -94,7 +94,7 @@
             <el-card>
                 <div style="width: 250px;">
                     <div class="text-small">
-                        {{CAKE_TOKEN_INFO.symbol}} EARNED
+                       <strong> {{CAKE_TOKEN_INFO.symbol}} EARNED</strong>
                     </div>
                     <div class="flex justify-content-space-between align-items-center">
                         <div>

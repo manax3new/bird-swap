@@ -17,7 +17,7 @@
             </div>
             <div>
                 <div class="text-small text-bold">
-                    {{ earningTokenSymbol }} Earned
+                  <strong>  {{ earningTokenSymbol }} Earned</strong>
                 </div>
                 <div class="text-medium" :class="{'text-primary': hasEarnings, 'text-gray': !hasEarnings}">
                     {{ hasEarnings ? numeralNumberFormat(earningTokenBalance, 5) : numeralNumberFormat(earningTokenBalance, 1) }}
@@ -29,7 +29,7 @@
             <div>
                 <div v-if="isManualCakePool">
                     <div class="text-small text-bold">
-                        {{ CAKE_TOKEN_INFO.symbol }} staked
+                        <strong>{{ CAKE_TOKEN_INFO.symbol }} staked</strong>
                     </div>
                     <div class="text-medium" :class="{'text-primary': hasStaked, 'text-gray': !hasStaked}">
                         {{ hasStaked ? numeralNumberFormat(stakedTokenBalance, 5) : numeralNumberFormat(stakedTokenBalance, 1) }}
