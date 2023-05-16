@@ -57,6 +57,11 @@ const routes = [
 		name: 'Pool',
 		component: Pool,
 	},
+	{
+		path: '/bridge',
+		name: 'Bridge',
+		component: () => import(/* webpackChunkName: "Bridge" */ '../views/Bridge.vue')
+	},
 ]
 
 const router = createRouter({

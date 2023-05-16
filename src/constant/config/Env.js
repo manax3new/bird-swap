@@ -15,3 +15,4 @@ export const getEnv = () => {
 }
 
 export const appBaseUrl = process.env.NODE_ENV === "production" ? process.env.VUE_APP_BASE_URL : ''
+export const isTestnet = process.env.VUE_APP_IS_TESTNET ? !!process.env.VUE_APP_IS_TESTNET : true
