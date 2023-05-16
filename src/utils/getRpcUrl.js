@@ -1,7 +1,7 @@
 import sample from 'lodash/sample'
 
 // export const nodes = [process.env.VUE_APP_PUBLIC_NODE_1, process.env.VUE_APP_PUBLIC_NODE_2, process.env.VUE_APP_PUBLIC_NODE_3]
-export const nodes = [process.env.VUE_APP_PUBLIC_NODE_3]
+export const nodes = [process.env.VUE_APP_PUBLIC_NODE_1]
 
 const getNodeUrl = () => {
     // Use custom node if available (both for development and production)
