@@ -11,7 +11,7 @@ export const MULTICALL_ADDRESS = {
 
 export const MULTICALL_ABI = {
     [CHAIN.bnbTestnet.chainId]: MULTICALL_BNB_TESTNET,
-    [CHAIN.sepoliaTestnet.chainId]: MULTICALL_SEPOLIA_TESTNET,
+    [CHAIN.sepoliaTestnet.chainId]: MULTICALL_BNB_TESTNET,
     // [CHAIN.ethereumMainnet.chainId]: MULTICALL_ETHEREUM_MAINNET,
     [CHAIN.ethereumMainnet.chainId]: MULTICALL_BNB_TESTNET,
 }
@@ -25,12 +25,16 @@ export const RPC_URL = {
 export const TOKENS = {
     [CHAIN.bnbTestnet.chainId]: {
         usdt: {
-            address: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+            // address: '0x337610d27c682E347C9cD60BD4b3b107C9d34dDd',
+            address: '0x9aC9cdD0c5512eFe69e599db74A2148f68e4cAD8',
+            decimals: 18,
         },
     },
     [CHAIN.sepoliaTestnet.chainId]: {
         usdt: {
-            address: '0x7169D38820dfd117C3FA1f22a697dBA58d90BA06',
+            // address: '0x7169D38820dfd117C3FA1f22a697dBA58d90BA06',
+            address: '0x1BfEA78465784C2AB2FD4A93eb7C608D814f9c7f',
+            decimals: 18,
         },
     },
     [CHAIN.ethereumMainnet.chainId]: {

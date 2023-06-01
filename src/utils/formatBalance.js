@@ -31,3 +31,7 @@ export const formatNumber = (number, minPrecision = 2, maxPrecision = 2) => {
 export const getDecimalAmount = (amount, decimals = 18) => {
     return new BigNumber(amount).times(BIG_TEN.pow(decimals))
 }
+
+export const tokenBalanceFormat = (amount, decimals = 18, displayDecimals = 2) => {
+    return parseFloat(formatUnits(amount, decimals)).toFixed(displayDecimals)
+}
