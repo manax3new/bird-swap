@@ -3,6 +3,11 @@ import MULTICALL_BNB_TESTNET from '@/constant/abi/bnbTestnet/multicall.json'
 import MULTICALL_SEPOLIA_TESTNET from '@/constant/abi/sepoliaTestnet/multicall.json'
 import MULTICALL_ETHEREUM_MAINNET from '@/constant/abi/ethereumMainnet/multicall.json'
 
+export const BRIDGE_CONTRACT_ADDRESS = {
+    [CHAIN.bnbTestnet.chainId]: '0x6C3Ea55260B8f7F0a62bE332B952F9233ebbDe3D',
+    [CHAIN.sepoliaTestnet.chainId]: '0xFDD35f0eCF704b7828469A19ffd34912D9e10c62',
+}
+
 export const MULTICALL_ADDRESS = {
     [CHAIN.bnbTestnet.chainId]: '0x8F3273Fb89B075b1645095ABaC6ed17B2d4Bc576',
     [CHAIN.sepoliaTestnet.chainId]: '0xcA11bde05977b3631167028862bE2a173976CA11',
