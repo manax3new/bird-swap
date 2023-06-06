@@ -8,8 +8,8 @@
         <div>
             <el-card>
                 <div class="flex justify-content-space-around">
-                    <div>
-                        <div v-if="chainA.chain" class="text-bold">
+                    <div v-if="chainA.chain">
+                        <div class="text-bold">
                             <el-link type="primary" target="_blank" :href="chainAContractUrl">
                                 {{ chainA.chain.name }} Bridge Contract 
                                 &nbsp;<el-icon><Link /></el-icon>
@@ -19,8 +19,8 @@
                             {{ tokenBalanceFormat(chainA.contractBalance, chainA.token.decimals, 5) }} {{ tokenSymbol }}
                         </div>
                     </div>
-                    <div>
-                        <div v-if="chainB.chain" class="text-bold">
+                    <div v-if="chainB.chain">
+                        <div class="text-bold">
                             <el-link type="primary" target="_blank" :href="chainBContractUrl">
                                 {{ chainB.chain.name }} Bridge Contract
                                 &nbsp;<el-icon><Link /></el-icon>
@@ -50,8 +50,18 @@
                         {{ chainA.chain.name }}
                     </div>
                     <div class="flex">
-                        <el-input v-model="form.chainAToBTokenAmount" style="width: 140px;"></el-input>
-                        <el-button type="primary">Bridge to {{ chainB.chain.name }} </el-button>
+                        <el-input 
+                        style="width: 200px;" 
+                        v-model="form.chainAToBTokenAmount" 
+                        placeholder="0.0" 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
+                        <el-button type="primary"
+                        :disabled="!aToBInputValid">
+                            Bridge to {{ chainB.chain.name }} 
+                        </el-button>
+                    </div>
+                    <div v-if="aToBInputError" class="text-red">
+                        {{ aToBInputError }}
                     </div>
                     <div>
                         Balance: 
@@ -66,8 +76,18 @@
                         {{ chainB.chain.name }}
                     </div>
                     <div class="flex">
-                        <el-input v-model="form.chainBToBTokenAmount" style="width: 140px;"></el-input>
-                        <el-button type="primary">Bridge to {{ chainA.chain.name }} </el-button>
+                        <el-input 
+                        style="width: 200px;" 
+                        v-model="form.chainBToATokenAmount" 
+                        placeholder="0.0" 
+                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
+                        <el-button type="primary"
+                        :disabled="!bToAInputValid">
+                            Bridge to {{ chainA.chain.name }} 
+                        </el-button>
+                    </div>
+                    <div v-if="bToAInputError" class="text-red">
+                        {{ bToAInputError }}
                     </div>
                     <div>
                         Balance: 
@@ -90,6 +110,8 @@ import { TOKENS, BRIDGE_CONTRACT_ADDRESS } from '@/constant/Bridge.js'
 import { tokenBalanceFormat } from '@/utils/formatBalance'
 import { isTestnet } from '@/constant/config/Env'
 import { Link } from '@element-plus/icons-vue'
+import { TokenAmount } from '@pancakeswap/sdk'
+import { parseUnits } from '@ethersproject/units'
 
 const SELECT_TOKEN = 'usdt'
 const FEE = '0.01'
@@ -131,6 +153,44 @@ export default {
         const chainBContractUrl = computed(() => {
             return `${chainB.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainB.chain.chainId]}`
         })
+
+        const aToBInputError = computed(() => {
+            return inputError(chainA, form.chainAToBTokenAmount)
+        })
+        const aToBInputValid = computed(() => {
+            return inputValid(form.chainAToBTokenAmount, aToBInputError.value)
+        })
+        const bToAInputError = computed(() => {
+            return inputError(chainB, form.chainBToATokenAmount)
+        })
+        const bToAInputValid = computed(() => {
+            return inputValid(form.chainBToATokenAmount, bToAInputError.value)
+        })
+        
+        const inputError = (chain, inputAmount) => {
+            if(!inputAmount) {
+                return ''
+            }
+            const amountToBride = new TokenAmount(chain.token, parseUnits(inputAmount, chain.token.decimals))
+            const amountBalance = new TokenAmount(chain.token, chain.tokenBalance)
+            if(amountBalance.lessThan(amountToBride)) {
+                return `Insufficient ${tokenSymbol.value} balance`
+            }
+            return ''
+        }
+
+        const inputValid = (inputAmount, inputError) => {
+            if(!inputAmount) {
+                return false
+            }
+            if(parseFloat(inputAmount) <= 0) {
+                return false
+            }
+            if(inputError) {
+                return false
+            }
+            return true
+        }
 
         const fetchTokenInfo = async (chainId, token, account) => {
             const balances = await getTokenBalance(chainId, token.address, account)
@@ -181,6 +241,10 @@ export default {
             FEE,
             chainAContractUrl,
             chainBContractUrl,
+            aToBInputError,
+            aToBInputValid,
+            bToAInputError,
+            bToAInputValid,
         }
     }
 }

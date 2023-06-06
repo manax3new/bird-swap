@@ -33,5 +33,6 @@ export const getDecimalAmount = (amount, decimals = 18) => {
 }
 
 export const tokenBalanceFormat = (amount, decimals = 18, displayDecimals = 2) => {
-    return parseFloat(formatUnits(amount, decimals)).toFixed(displayDecimals)
+    const balanceAmount = parseFloat(formatUnits(amount, decimals))
+    return balanceAmount.toLocaleString()
 }
