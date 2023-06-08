@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["about"],{f820:function(e,n,t){"use strict";t.r(n);var c=t("7a23"),o={class:"about"},a=Object(c["createElementVNode"])("h1",null,null,-1),l=[a];function r(e,n){return Object(c["openBlock"])(),Object(c["createElementBlock"])("div",o,l)}var u=t("6b0d"),b=t.n(u);const s={},d=b()(s,[["render",r]]);n["default"]=d}}]);
+//# sourceMappingURL=about.c66ac793.js.map
