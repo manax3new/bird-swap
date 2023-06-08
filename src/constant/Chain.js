@@ -1,4 +1,4 @@
-import { infuraKey } from '@/constant/config/Env'
+import { infuraKey, bnbTestnetRpcUrl } from '@/constant/config/Env'
 
 export default {
     bnbTestnet: {
@@ -11,14 +11,14 @@ export default {
     sepoliaTestnet: {
         chainId: 11155111,
         name: 'Sepolia test network',
-        rpcUrl: `https://sepolia.infura.io/v3/${infuraKey}`,
+        rpcUrl: `https://rpc.sepolia.org`,
         currencySymbol: 'SepoliaETH',
         blockExplorerUrl: 'https://sepolia.etherscan.io',
     },
     ethereumMainnet: {
         chainId: 1,
         name: 'Ethereum Mainnet',
-        rpcUrl: `https://mainnet.infura.io/v3/${infuraKey}`,
+        rpcUrl: `https://ethereum.publicnode.com`,
         currencySymbol: 'ETH',
         blockExplorerUrl: 'https://etherscan.io',
     },

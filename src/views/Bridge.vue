@@ -4,7 +4,10 @@
         <h1>
             {{ tokenSymbol }} Bridge
         </h1>
-
+        <div>
+            <el-button type="primary" plain @click="refresh">Refresh</el-button>
+        </div>
+        <br>
         <div>
             <el-card>
                 <div class="flex justify-content-space-around">
@@ -56,7 +59,8 @@
                         placeholder="0.0" 
                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
                         <el-button type="primary"
-                        :disabled="!aToBInputValid">
+                        :disabled="!aToBInputValid"
+                        @click="bridgeAToB">
                             Bridge to {{ chainB.chain.name }} 
                         </el-button>
                     </div>
@@ -82,7 +86,8 @@
                         placeholder="0.0" 
                         oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
                         <el-button type="primary"
-                        :disabled="!bToAInputValid">
+                        :disabled="!bToAInputValid"
+                        @click="bridgeBToA">
                             Bridge to {{ chainA.chain.name }} 
                         </el-button>
                     </div>
@@ -97,21 +102,24 @@
                 </div>
             </el-card>
         </div>
-
     </div>
 </template>
 <script>
 
 import { getTokenBalance } from '@/state/bridge'
 import useWeb3Connect from '@/use/Web3Connect'
-import { onMounted, reactive, computed } from 'vue'
+import { onMounted, reactive, computed, ref } from 'vue'
 import CHAIN from '@/constant/Chain'
-import { TOKENS, BRIDGE_CONTRACT_ADDRESS } from '@/constant/Bridge.js'
+import { TOKENS, BRIDGE_CONTRACT_ADDRESS, BRIDGING_ROUTE } from '@/constant/Bridge.js'
 import { tokenBalanceFormat } from '@/utils/formatBalance'
 import { isTestnet } from '@/constant/config/Env'
 import { Link } from '@element-plus/icons-vue'
 import { TokenAmount } from '@pancakeswap/sdk'
 import { parseUnits } from '@ethersproject/units'
+import erc20ABI from '@/constant/abi/ERC20.json'
+import { useGasPrice } from '@/state/user/hook'
+import contractErrorExtract from '@/lib/contractErrorExtract.js'
+import { ElNotification, ElLoading } from 'element-plus'
 
 const SELECT_TOKEN = 'usdt'
 const FEE = '0.01'
@@ -124,12 +132,14 @@ export default {
 
         const Web3Connect = useWeb3Connect()
         const account = Web3Connect.account
+        const network = Web3Connect.network
 
         const chainA = reactive({
             chain: null,
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
+            web3: null,
         })
 
         const chainB = reactive({
@@ -137,12 +147,15 @@ export default {
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
+            web3: null,
         })
 
         const form = reactive({
             chainAToBTokenAmount: '',
             chainBToATokenAmount: '',
         })
+
+        const isOnBriding = ref(false)
 
         const tokenSymbol = computed(() => {
             return isTestnet ? 'BIRD' : 'USDT'
@@ -171,6 +184,12 @@ export default {
             if(!inputAmount) {
                 return ''
             }
+            if(!network.value) {
+                return ''
+            }
+            if(network.value.id !== chain.chain.chainId) {
+                return `Change network to ${chain.chain.name}`
+            }
             const amountToBride = new TokenAmount(chain.token, parseUnits(inputAmount, chain.token.decimals))
             const amountBalance = new TokenAmount(chain.token, chain.tokenBalance)
             if(amountBalance.lessThan(amountToBride)) {
@@ -180,6 +199,9 @@ export default {
         }
 
         const inputValid = (inputAmount, inputError) => {
+            if(!network.value) {
+                return ''
+            }
             if(!inputAmount) {
                 return false
             }
@@ -201,13 +223,6 @@ export default {
         }
 
         const fetchAll = async () => {
-    
-            if(isTestnet) {
-                chainA.token = TOKENS[CHAIN.bnbTestnet.chainId][SELECT_TOKEN]
-                chainA.chain = CHAIN.bnbTestnet
-                chainB.token = TOKENS[CHAIN.sepoliaTestnet.chainId][SELECT_TOKEN]
-                chainB.chain = CHAIN.sepoliaTestnet
-            }
 
             if(!chainA.chain || !chainB.chain) {
                 return
@@ -227,7 +242,117 @@ export default {
 
         }
 
+        const bridgeAToB = async () => {
+            briding(chainA, form.chainAToBTokenAmount)
+        }
+
+        const bridgeBToA = async () => {
+            briding(chainB, form.chainBToATokenAmount)
+        }
+
+        const briding = async (primaryChain, _amount) => {
+
+            let transactionHash = ''
+            let fullScreenLoading = null
+
+            isOnBriding.value = true
+            fullScreenLoading = ElLoading.service({
+                lock: true,
+                text: 'Loading',
+                background: 'rgba(0, 0, 0, 0.7)',
+            })
+
+            const web3 = Web3Connect.getWeb3()
+
+            const erc20Contract = new web3.eth.Contract(erc20ABI, primaryChain.token.address)
+            const to = BRIDGE_CONTRACT_ADDRESS[primaryChain.chain.chainId]
+            const amount = parseUnits(_amount, primaryChain.token.decimals)
+
+            const tx = erc20Contract.methods.transfer(to, amount)
+            const estimatedGas = await tx.estimateGas({from: account.value.address})
+            const gasPrice = useGasPrice()
+
+            tx.send({
+                from: account.value.address,
+                gas: estimatedGas,
+                gasPrice: gasPrice,
+            })
+            .on('transactionHash', (_transactionHash) => {
+                transactionHash = _transactionHash
+            })
+            .on('receipt', async () => {
+                ElNotification({
+                    customClass: 'top-of-every-thing',
+                    type: 'success',
+                    title: 'Transaction receipt',
+                    dangerouslyUseHTMLString: true,
+                    message: `<a href="${viewTransactionOnBlockExplorer(primaryChain.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
+                    duration: 10 * 1000,
+                })
+                
+                setTimeout(async () => {
+                    await fetchAll()
+                    clearForm()
+                    isOnBriding.value = false
+                    fullScreenLoading.close()
+                    ElNotification({
+                        customClass: 'top-of-every-thing',
+                        type: 'success',
+                        title: 'Briding done.',
+                        dangerouslyUseHTMLString: true,
+                        message: `<a href="${viewTransactionOnBlockExplorer(primaryChain.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
+                        duration: 10 * 1000,
+                    })
+                }, 10 * 1000)
+            })
+            .on('error', (error) => {
+                console.log('bridge error', error.message)
+                ElNotification({
+                    customClass: 'top-of-every-thing',
+                    type: 'warning',
+                    title: 'Bridge fail',
+                    message: contractErrorExtract(error.message),
+                    duration: 15 * 1000,
+                })
+                isOnBriding.value = false
+                fullScreenLoading.close()
+            }) 
+        }
+
+        const viewTransactionOnBlockExplorer = (chain, transactionHash) => {
+            return `${chain.blockExplorerUrl}/tx/${transactionHash}`
+        }
+
+        const clearForm = () => {
+            form.chainAToBTokenAmount = ''
+            form.chainBToATokenAmount = ''
+        }
+
+        const refresh = async () => {
+
+            let fullScreenLoading = null
+
+            isOnBriding.value = true
+            fullScreenLoading = ElLoading.service({
+                lock: true,
+                text: 'Loading',
+                background: 'rgba(0, 0, 0, 0.7)',
+            })
+
+            await fetchAll()
+
+            fullScreenLoading.close()
+        }
+
         onMounted(() => {
+
+            if(isTestnet) {
+                chainA.token = TOKENS[CHAIN.bnbTestnet.chainId][SELECT_TOKEN]
+                chainA.chain = CHAIN.bnbTestnet
+                chainB.token = TOKENS[CHAIN.sepoliaTestnet.chainId][SELECT_TOKEN]
+                chainB.chain = CHAIN.sepoliaTestnet
+            }
+
             fetchAll()
         })
 
@@ -245,6 +370,9 @@ export default {
             aToBInputValid,
             bToAInputError,
             bToAInputValid,
+            bridgeAToB,
+            bridgeBToA,
+            refresh,
         }
     }
 }

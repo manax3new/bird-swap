@@ -95,6 +95,7 @@ export default () => {
             42: "Kovan",
             56: 'BSC Mainnet',
             97: 'BSC Testnet',
+            11155111: 'Sepolia test network',
         };
         store.commit('updateNetwork', {
             id: networkId,

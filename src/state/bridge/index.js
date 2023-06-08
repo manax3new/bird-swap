@@ -12,9 +12,14 @@ export const getTokenBalance = async (chainId, address, account) => {
         }
     ]
 
-    const rawTokenBalances = await multicall(chainId, erc20ABI, calls)
-    const parsedTokenBalances = rawTokenBalances.map((tokenBalance) => {
-        return new BigNumber(tokenBalance).toJSON()
-    })
-    return parsedTokenBalances
+    try {
+        const rawTokenBalances = await multicall(chainId, erc20ABI, calls)
+        const parsedTokenBalances = rawTokenBalances.map((tokenBalance) => {
+            return new BigNumber(tokenBalance).toJSON()
+        })
+        return parsedTokenBalances
+    } catch (error) {
+        console.log('state.bridge.getTokenBalance error', error.message)
+        return '0'
+    }   
 }
