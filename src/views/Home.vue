@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="box-wrapper">
-            <div class="bg-home"><img src="/images/36136.png"></div>
+            <div class="bg-home"><img :src="`${appBaseUrl}/images/36136.png`"></div>
             <h1>Trade crypto and NFTs<br> with confidence</h1>
             <div class="text_small">Buy, sell, and explore tokens and NFTs</div>
             <div style="margin-top: 25px;">
@@ -43,3 +43,15 @@
 
     </div>
 </template>
+<script>
+
+import { appBaseUrl } from '@/constant/config/Env'
+
+export default {
+    setup() {
+        return {
+            appBaseUrl,
+        }
+    }
+}
+</script>
