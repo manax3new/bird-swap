@@ -7,6 +7,7 @@
             <router-link to="/swap">Swap</router-link>
             <router-link to="/farm">Farms</router-link>
             <router-link to="/pool">Pools</router-link>
+            <router-link to="/bridge">Bridge</router-link>
         </el-space>
         <div class="flex align-items-center">
             <div class="flex align-items-center" v-if="account.address">
