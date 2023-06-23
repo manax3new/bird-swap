@@ -168,19 +168,19 @@ export default {
         })
 
         const aToBInputError = computed(() => {
-            return inputError(chainA, form.chainAToBTokenAmount)
+            return inputError(chainA, chainB, form.chainAToBTokenAmount)
         })
         const aToBInputValid = computed(() => {
             return inputValid(form.chainAToBTokenAmount, aToBInputError.value)
         })
         const bToAInputError = computed(() => {
-            return inputError(chainB, form.chainBToATokenAmount)
+            return inputError(chainB, chainA, form.chainBToATokenAmount)
         })
         const bToAInputValid = computed(() => {
             return inputValid(form.chainBToATokenAmount, bToAInputError.value)
         })
         
-        const inputError = (chain, inputAmount) => {
+        const inputError = (chain, pairChain, inputAmount) => {
             if(!inputAmount) {
                 return ''
             }
@@ -190,10 +190,15 @@ export default {
             if(network.value.id !== chain.chain.chainId) {
                 return `Change network to ${chain.chain.name}`
             }
+
             const amountToBride = new TokenAmount(chain.token, parseUnits(inputAmount, chain.token.decimals))
             const amountBalance = new TokenAmount(chain.token, chain.tokenBalance)
+            const destinationContractTokenAmount = new TokenAmount(chain.token, pairChain.contractBalance)
             if(amountBalance.lessThan(amountToBride)) {
                 return `Insufficient ${tokenSymbol.value} balance`
+            }
+            if(destinationContractTokenAmount.lessThan(amountToBride)) {
+                return `Insufficient ${tokenSymbol.value} balance on ${pairChain.chain.name} smart contract`
             }
             return ''
         }
