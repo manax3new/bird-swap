@@ -135,6 +135,9 @@ body {
 .justify-content-space-around {
     justify-content: space-around;
 }
+.justify-content-end {
+    justify-content: flex-end;
+}
 .align-items-center {
     align-items: center;
 }
@@ -188,6 +191,9 @@ body {
     color: white;
 }
 
+.vertical-space-5 {
+    height: 5px;
+}
 .vertical-space-10 {
     height: 10px;
 }

@@ -1,11 +1,8 @@
 import { StaticJsonRpcProvider } from '@ethersproject/providers'
 import { Contract } from '@ethersproject/contracts'
-import { MULTICALL_ABI, MULTICALL_ADDRESS, RPC_URL } from '@/constant/Bridge'
+import { MULTICALL_ADDRESS, RPC_URL } from '@/constant/Bridge'
 import CHAIN from '@/constant/Chain'
-
-const getMulticallAbi = (chainId) => {
-    return MULTICALL_ABI[chainId] ? MULTICALL_ABI[chainId] : MULTICALL_ABI[CHAIN.bnbTestnet.chainId]
-}
+import MULTICALL_ABI from '@/constant/abi/Multicall'
 
 const getMulticallAddress = (chainId) => {
     return MULTICALL_ADDRESS[chainId] ? MULTICALL_ADDRESS[chainId] : MULTICALL_ADDRESS[CHAIN.bnbTestnet.chainId]
@@ -24,7 +21,7 @@ const getContract = (abi, address, signer, simpleRpcProvider) => {
 
 export const getMulticallContract = (chainId) => {
 
-    const abi = getMulticallAbi(chainId)
+    const abi = MULTICALL_ABI
     const address = getMulticallAddress(chainId)
     const simpleRpcProvider = getRpcProvider(chainId)
 

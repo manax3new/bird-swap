@@ -1,132 +1,173 @@
 <template>
     <div class="Bridge">
-        
-        <h1>
-            {{ tokenSymbol }} Bridge
-        </h1>
-        <div>
-            <el-button type="primary" plain @click="refresh">Refresh</el-button>
+        <div class="flex-center">
+            <div>
+                <h1>Bridge</h1>
+                <div>
+                    <el-button type="primary" plain @click="refresh">Refresh</el-button>
+                </div>
+            </div>
         </div>
         <br>
-        <div>
+        <div class="flex-center">
             <el-card>
                 <div class="flex justify-content-space-around">
-                    <div v-if="chainA.chain">
+                    <div>
                         <div class="text-bold">
                             <el-link type="primary" target="_blank" :href="chainAContractUrl">
-                                {{ chainA.chain.name }} Bridge Contract 
+                                {{ chainA.chain ? chainA.chain.name : '-' }} Bridge Contract
                                 &nbsp;<el-icon><Link /></el-icon>
                             </el-link>
                         </div>
                         <div>
-                            {{ tokenBalanceFormat(chainA.contractBalance, chainA.token.decimals, 5) }} {{ tokenSymbol }}
+                            Balance {{ chainA.token ? `${chainA.token.symbol}: ${tokenBalanceFormat(chainA.contractBalance, chainA.token.decimals, 5)}` : 0 }}
                         </div>
                     </div>
-                    <div v-if="chainB.chain">
+                    <div class="horizontal-space-10"></div>
+                    <div>
                         <div class="text-bold">
                             <el-link type="primary" target="_blank" :href="chainBContractUrl">
-                                {{ chainB.chain.name }} Bridge Contract
+                                {{ chainB.chain ? chainB.chain.name : '-' }} Bridge Contract
                                 &nbsp;<el-icon><Link /></el-icon>
                             </el-link>
                         </div>
                         <div>
-                            {{ tokenBalanceFormat(chainB.contractBalance, chainB.token.decimals, 5) }} {{ tokenSymbol }}
+                            Balance {{ chainB.token ? `${chainB.token.symbol}: ${tokenBalanceFormat(chainB.contractBalance, chainB.token.decimals, 5)}` : 0 }}
                         </div>
                     </div>
+                    <div class="horizontal-space-10"></div>
                     <div>
                         <div class="text-bold">
                             Bridging Fee
                         </div>
                         <div>
-                            {{ FEE }} {{ tokenSymbol }}/TX
+                            {{ FEE }} token/TX
                         </div>
                     </div>
                 </div>
-                
             </el-card>
         </div>
         <br>
-        <div class="flex justify-content-space-around">
+        <div class="flex-center">
             <el-card>
-                <div v-if="chainA.chain">
-                    <div>
-                        {{ chainA.chain.name }}
-                    </div>
-                    <div class="flex">
-                        <el-input 
-                        style="width: 200px;" 
-                        v-model="form.chainAToBTokenAmount" 
-                        placeholder="0.0" 
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
-                        <el-button type="primary"
-                        :disabled="!aToBInputValid"
-                        @click="bridgeAToB">
-                            Bridge to {{ chainB.chain.name }} 
-                        </el-button>
-                    </div>
-                    <div v-if="aToBInputError" class="text-red">
-                        {{ aToBInputError }}
-                    </div>
-                    <div>
-                        Balance: 
-                        {{ tokenBalanceFormat(chainA.tokenBalance, chainA.token.decimals, 5) }} 
-                        {{ tokenSymbol }}
-                    </div>
-                </div>
-            </el-card>
-            <el-card>
-                <div v-if="chainB.chain">
-                    <div>
-                        {{ chainB.chain.name }}
-                    </div>
-                    <div class="flex">
-                        <el-input 
-                        style="width: 200px;" 
-                        v-model="form.chainBToATokenAmount" 
-                        placeholder="0.0" 
-                        oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
-                        <el-button type="primary"
-                        :disabled="!bToAInputValid"
-                        @click="bridgeBToA">
-                            Bridge to {{ chainA.chain.name }} 
-                        </el-button>
-                    </div>
-                    <div v-if="bToAInputError" class="text-red">
-                        {{ bToAInputError }}
-                    </div>
-                    <div>
-                        Balance: 
-                        {{ tokenBalanceFormat(chainB.tokenBalance, chainB.token.decimals, 5) }} 
-                        {{ tokenSymbol }}
+                <div class="flex-center">
+                    <div class="text-align-center">
+                        <div>
+                            <el-select v-model="chainA.chain" value-key="chainId" class="m-2" placeholder="Select network">
+                                <el-option
+                                v-for="item in data.chains"
+                                :key="item.chainId"
+                                :label="item.name"
+                                :value="item"
+                                :disabled="item === chainB.chain"
+                                />
+                            </el-select>
+                        </div>
+                        <div class="vertical-space-5"></div>
+                        <div class="flex justify-content-center">
+                            <div>
+                                <el-select v-model="chainA.token" value-key="symbol" class="m-2" placeholder="Select Token">
+                                    <el-option
+                                    v-for="item in availableTokens"
+                                    :key="item.symbol"
+                                    :label="item.symbol"
+                                    :value="item"
+                                    />
+                                </el-select>
+                            </div>
+                            <div>
+                                <el-input 
+                                style="width: 200px;" 
+                                v-model="form.chainAToBTokenAmount" 
+                                placeholder="0.0" 
+                                oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></el-input>
+                                <div class="vertical-space-5"></div>
+                                <div class="flex justify-content-end">
+                                    Balance: 
+                                    <div v-if="chainA.token">
+                                        {{ tokenBalanceFormat(chainA.tokenBalance, chainA.token.decimals, 5) }} 
+                                    </div>
+                                    <div v-else>
+                                        0.00
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vertical-space-10"></div>
+                        <el-icon>
+                            <Bottom />
+                        </el-icon>
+                        <div class="vertical-space-10"></div>
+                        <div class="flex align-items-center justify-content-space-between">
+                            <el-select v-model="chainB.chain" value-key="chainId" class="m-2" placeholder="Select network">
+                                <el-option
+                                v-for="item in data.chains"
+                                :key="item.chainId"
+                                :label="item.name"
+                                :value="item"
+                                :disabled="item === chainA.chain"
+                                />
+                            </el-select>
+                            <div class="horizontal-space-5"></div>
+                            <div class="flex justify-content-end">
+                                <div v-if="chainB.token">
+                                    {{ chainB.token.symbol }}
+                                </div>
+                                <div class="horizontal-space-5"></div>
+                                <div>
+                                    Balance: 
+                                </div>
+                                <div v-if="chainB.token">
+                                    {{ tokenBalanceFormat(chainB.tokenBalance, chainB.token.decimals, 5) }} 
+                                </div>
+                                <div v-else>
+                                    0.00
+                                </div>
+                            </div>
+                        </div>
+                        <div class="vertical-space-10"></div>
+                        <div class="vertical-space-10"></div>
+                        <div>
+                            <div v-if="aToBInputError" class="text-red">
+                                {{ aToBInputError }}
+                            </div>
+                            <el-button 
+                            type="primary" 
+                            class="custom-button-100percent"
+                            :disabled="!aToBInputValid">
+                                Bridge
+                            </el-button>
+                        </div>
                     </div>
                 </div>
             </el-card>
         </div>
+        <br>
     </div>
 </template>
 <script>
 
 import { getTokenBalance } from '@/state/bridge'
 import useWeb3Connect from '@/use/Web3Connect'
-import { onMounted, reactive, computed, ref } from 'vue'
-import CHAIN from '@/constant/Chain'
-import { TOKENS, BRIDGE_CONTRACT_ADDRESS, BRIDGING_ROUTE } from '@/constant/Bridge.js'
+import { reactive, computed, ref, watch } from 'vue'
+import { TOKENS, BRIDGE_CONTRACT_ADDRESS } from '@/constant/Bridge.js'
 import { tokenBalanceFormat } from '@/utils/formatBalance'
 import { isTestnet } from '@/constant/config/Env'
-import { Link } from '@element-plus/icons-vue'
+import { Link, Bottom } from '@element-plus/icons-vue'
 import { TokenAmount } from '@pancakeswap/sdk'
 import { parseUnits } from '@ethersproject/units'
 import erc20ABI from '@/constant/abi/ERC20.json'
 import { useGasPrice } from '@/state/user/hook'
 import contractErrorExtract from '@/lib/contractErrorExtract.js'
 import { ElNotification, ElLoading } from 'element-plus'
+import CHAIN from '@/constant/Chain'
 
-const SELECT_TOKEN = 'usdt'
 const FEE = '0.01'
 
 export default {
     components: {
         Link,
+        Bottom,
     },
     setup() {
 
@@ -134,12 +175,15 @@ export default {
         const account = Web3Connect.account
         const network = Web3Connect.network
 
+        const data = reactive({
+            chains: [],
+        })
+
         const chainA = reactive({
             chain: null,
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
-            web3: null,
         })
 
         const chainB = reactive({
@@ -147,7 +191,6 @@ export default {
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
-            web3: null,
         })
 
         const form = reactive({
@@ -157,14 +200,27 @@ export default {
 
         const isOnBriding = ref(false)
 
-        const tokenSymbol = computed(() => {
-            return isTestnet ? 'BIRD' : 'USDT'
+        for(const chainKey in CHAIN) {
+            data.chains.push(CHAIN[chainKey])
+        }
+
+        const availableTokens = computed(() => {
+            if(!chainA.chain) {
+                return []
+            }
+            const tokenInChain = TOKENS[chainA.chain.chainId]
+            const tokensInChain = []
+            for(const tokenKey in tokenInChain) {
+                tokensInChain.push(tokenInChain[tokenKey])
+            }
+            return tokensInChain
         })
+
         const chainAContractUrl = computed(() => {
-            return `${chainA.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainA.chain.chainId]}`
+            return chainA.chain ? `${chainA.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainA.chain.chainId]}` : ''
         })
         const chainBContractUrl = computed(() => {
-            return `${chainB.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainB.chain.chainId]}`
+            return chainB.chain ? `${chainB.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainB.chain.chainId]}` : ''
         })
 
         const aToBInputError = computed(() => {
@@ -179,6 +235,52 @@ export default {
         const bToAInputValid = computed(() => {
             return inputValid(form.chainBToATokenAmount, bToAInputError.value)
         })
+
+        watch(() => chainA.chain, (newVal) => {
+            chainA.token = null
+            if((newVal)) {
+                fetchChainInfo(newVal, chainA.token, chainA)
+                autoSelectChainBToken()
+            }
+            
+        })
+        watch(() => chainB.chain, (newVal) => {
+            if((newVal)) {
+                fetchChainInfo(newVal, chainB.token, chainB)
+                autoSelectChainBToken()
+            }  
+        })
+        watch(() => chainA.token, (newVal) => {
+            if((newVal)) {
+                fetchChainInfo(chainA.chain, newVal, chainA)
+                autoSelectChainBToken()
+            }
+        })
+        watch(() => chainB.token, (newVal) => {
+            if((newVal)) {
+                fetchChainInfo(chainB.chain, newVal, chainB)
+            }
+        })
+
+        const autoSelectChainBToken = () => {
+            if(!chainA.chain || !chainA.token || !chainB.chain) {
+                chainB.token = null
+                return
+            }
+            chainB.token = TOKENS[chainB.chain.chainId][chainA.token.symbol]
+        }
+
+        const fetchChainInfo = async (chain, token, chainObject) => {
+            if(!chain || !token) {
+                chainObject.tokenBalance = 0
+                chainObject.contractBalance = 0
+                return
+            }
+            const tokenInfo = await fetchTokenInfo(chain.chainId, token, account.value.address)
+            const contractInfo = await fetchTokenInfo(chain.chainId, token, BRIDGE_CONTRACT_ADDRESS[chain.chainId])
+            chainObject.tokenBalance = tokenInfo.balance
+            chainObject.contractBalance = contractInfo.balance
+        }
         
         const inputError = (chain, pairChain, inputAmount) => {
             if(!inputAmount) {
@@ -191,14 +293,18 @@ export default {
                 return `Change network to ${chain.chain.name}`
             }
 
+            if(chain.chain.chainId === pairChain.chain.chainId) {
+                return `Can not bridge on same network`
+            }
+
             const amountToBride = new TokenAmount(chain.token, parseUnits(inputAmount, chain.token.decimals))
             const amountBalance = new TokenAmount(chain.token, chain.tokenBalance)
             const destinationContractTokenAmount = new TokenAmount(chain.token, pairChain.contractBalance)
             if(amountBalance.lessThan(amountToBride)) {
-                return `Insufficient ${tokenSymbol.value} balance`
+                return `Insufficient ${chainA.token.symbol} balance`
             }
             if(destinationContractTokenAmount.lessThan(amountToBride)) {
-                return `Insufficient ${tokenSymbol.value} balance on ${pairChain.chain.name} smart contract`
+                return `Insufficient ${chainA.token.symbol} balance on ${pairChain.chain.name} smart contract`
             }
             return ''
         }
@@ -349,25 +455,14 @@ export default {
             fullScreenLoading.close()
         }
 
-        onMounted(() => {
-
-            if(isTestnet) {
-                chainA.token = TOKENS[CHAIN.bnbTestnet.chainId][SELECT_TOKEN]
-                chainA.chain = CHAIN.bnbTestnet
-                chainB.token = TOKENS[CHAIN.sepoliaTestnet.chainId][SELECT_TOKEN]
-                chainB.chain = CHAIN.sepoliaTestnet
-            }
-
-            fetchAll()
-        })
-
         return {
+            data,
+            availableTokens,
             chainA,
             chainB,
             tokenBalanceFormat,
             isTestnet,
             form,
-            tokenSymbol,
             FEE,
             chainAContractUrl,
             chainBContractUrl,

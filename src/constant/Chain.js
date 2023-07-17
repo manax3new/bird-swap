@@ -15,11 +15,4 @@ export default {
         currencySymbol: 'SepoliaETH',
         blockExplorerUrl: 'https://sepolia.etherscan.io',
     },
-    ethereumMainnet: {
-        chainId: 1,
-        name: 'Ethereum Mainnet',
-        rpcUrl: `https://ethereum.publicnode.com`,
-        currencySymbol: 'ETH',
-        blockExplorerUrl: 'https://etherscan.io',
-    },
 }
