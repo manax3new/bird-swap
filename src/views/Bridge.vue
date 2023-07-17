@@ -134,7 +134,8 @@
                             <el-button 
                             type="primary" 
                             class="custom-button-100percent"
-                            :disabled="!aToBInputValid">
+                            :disabled="!aToBInputValid"
+                            @click="briding">
                                 Bridge
                             </el-button>
                         </div>
@@ -148,15 +149,15 @@
 <script>
 
 import { getTokenBalance } from '@/state/bridge'
+import { getBridgeAddress } from '@/state/bridge/Contract'
+import BRIDGE_ABI from '@/constant/abi/Bridge.json'
 import useWeb3Connect from '@/use/Web3Connect'
 import { reactive, computed, ref, watch } from 'vue'
 import { TOKENS, BRIDGE_CONTRACT_ADDRESS } from '@/constant/Bridge.js'
 import { tokenBalanceFormat } from '@/utils/formatBalance'
-import { isTestnet } from '@/constant/config/Env'
 import { Link, Bottom } from '@element-plus/icons-vue'
 import { TokenAmount } from '@pancakeswap/sdk'
 import { parseUnits } from '@ethersproject/units'
-import erc20ABI from '@/constant/abi/ERC20.json'
 import { useGasPrice } from '@/state/user/hook'
 import contractErrorExtract from '@/lib/contractErrorExtract.js'
 import { ElNotification, ElLoading } from 'element-plus'
@@ -353,15 +354,7 @@ export default {
 
         }
 
-        const bridgeAToB = async () => {
-            briding(chainA, form.chainAToBTokenAmount)
-        }
-
-        const bridgeBToA = async () => {
-            briding(chainB, form.chainBToATokenAmount)
-        }
-
-        const briding = async (primaryChain, _amount) => {
+        const briding = async () => {
 
             let transactionHash = ''
             let fullScreenLoading = null
@@ -375,11 +368,14 @@ export default {
 
             const web3 = Web3Connect.getWeb3()
 
-            const erc20Contract = new web3.eth.Contract(erc20ABI, primaryChain.token.address)
-            const to = BRIDGE_CONTRACT_ADDRESS[primaryChain.chain.chainId]
-            const amount = parseUnits(_amount, primaryChain.token.decimals)
+            const _amount = parseUnits(form.chainAToBTokenAmount, chainA.token.decimals)
+            const _token = chainA.token.address
+            const toChain = chainB.chain.chainId
 
-            const tx = erc20Contract.methods.transfer(to, amount)
+            const bridgeContractAddress = getBridgeAddress(chainA.chain.chainId)
+            const bridgeContract = new web3.eth.Contract(BRIDGE_ABI, bridgeContractAddress)
+
+            const tx = bridgeContract.methods.receiveTokens(_amount, _token, toChain)
             const estimatedGas = await tx.estimateGas({from: account.value.address})
             const gasPrice = useGasPrice()
 
@@ -397,7 +393,7 @@ export default {
                     type: 'success',
                     title: 'Transaction receipt',
                     dangerouslyUseHTMLString: true,
-                    message: `<a href="${viewTransactionOnBlockExplorer(primaryChain.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
+                    message: `<a href="${viewTransactionOnBlockExplorer(chainA.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
                     duration: 10 * 1000,
                 })
                 
@@ -411,7 +407,7 @@ export default {
                         type: 'success',
                         title: 'Briding done.',
                         dangerouslyUseHTMLString: true,
-                        message: `<a href="${viewTransactionOnBlockExplorer(primaryChain.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
+                        message: `<a href="${viewTransactionOnBlockExplorer(chainA.chain, transactionHash)}" target="_blank">View on Block Explorer: ${transactionHash}</a>`,
                         duration: 10 * 1000,
                     })
                 }, 10 * 1000)
@@ -461,7 +457,6 @@ export default {
             chainA,
             chainB,
             tokenBalanceFormat,
-            isTestnet,
             form,
             FEE,
             chainAContractUrl,
@@ -470,8 +465,7 @@ export default {
             aToBInputValid,
             bToAInputError,
             bToAInputValid,
-            bridgeAToB,
-            bridgeBToA,
+            briding,
             refresh,
         }
     }
