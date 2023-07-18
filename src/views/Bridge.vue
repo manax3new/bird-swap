@@ -131,10 +131,21 @@
                             <div v-if="aToBInputError" class="text-red">
                                 {{ aToBInputError }}
                             </div>
+                            <div v-if="chainA.token">
+                                <ApproveButton 
+                                    customClass="custom-button-100percent"
+                                    @approvalChange="approval => { chainA.tokenApproval = approval }"
+                                    :token="chainA.token" 
+                                    :spender="chainABridgeContractAddress"
+                                    :owner="account.address" 
+                                    :amount="form.chainAToBTokenAmount">
+                                </ApproveButton>
+                            </div>
+                            <div class="vertical-space-10"></div>
                             <el-button 
                             type="primary" 
                             class="custom-button-100percent"
-                            :disabled="!aToBInputValid"
+                            :disabled="!aToBInputValid || !chainA.tokenApproval"
                             @click="briding">
                                 Bridge
                             </el-button>
@@ -162,6 +173,7 @@ import { useGasPrice } from '@/state/user/hook'
 import contractErrorExtract from '@/lib/contractErrorExtract.js'
 import { ElNotification, ElLoading } from 'element-plus'
 import CHAIN from '@/constant/Chain'
+import ApproveButton from '@/components/ApproveButton'
 
 const FEE = '0.01'
 
@@ -169,6 +181,7 @@ export default {
     components: {
         Link,
         Bottom,
+        ApproveButton,
     },
     setup() {
 
@@ -185,6 +198,7 @@ export default {
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
+            tokenApproval: false,
         })
 
         const chainB = reactive({
@@ -192,6 +206,7 @@ export default {
             token: null,
             tokenBalance: 0,
             contractBalance: 0,
+            tokenApproval: false,
         })
 
         const form = reactive({
@@ -222,6 +237,9 @@ export default {
         })
         const chainBContractUrl = computed(() => {
             return chainB.chain ? `${chainB.chain.blockExplorerUrl}/address/${BRIDGE_CONTRACT_ADDRESS[chainB.chain.chainId]}` : ''
+        })
+        const chainABridgeContractAddress = computed(() => {
+            return chainA.chain ? getBridgeAddress(chainA.chain.chainId) : ''
         })
 
         const aToBInputError = computed(() => {
@@ -290,10 +308,12 @@ export default {
             if(!network.value) {
                 return ''
             }
+            if(!pairChain.chain) {
+                return ''
+            }
             if(network.value.id !== chain.chain.chainId) {
                 return `Change network to ${chain.chain.name}`
             }
-
             if(chain.chain.chainId === pairChain.chain.chainId) {
                 return `Can not bridge on same network`
             }
@@ -461,12 +481,14 @@ export default {
             FEE,
             chainAContractUrl,
             chainBContractUrl,
+            chainABridgeContractAddress,
             aToBInputError,
             aToBInputValid,
             bToAInputError,
             bToAInputValid,
             briding,
             refresh,
+            account,
         }
     }
 }

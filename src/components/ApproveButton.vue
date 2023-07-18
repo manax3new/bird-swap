@@ -28,7 +28,7 @@ import useWeb3Connect from '@/use/Web3Connect'
 
 export default {
     props: [
-        'token', 'owner', 'amount', 'customClass',
+        'token', 'owner', 'amount', 'customClass', 'spender',
     ],
     setup(props, context) {
 
@@ -37,6 +37,8 @@ export default {
         const web3 = Web3Connect.getWeb3()
         const ERC20 = useERC20(web3)
         const ParseSdkEntity = useParseSdkEntity()
+
+        const spender = props.spender ? props.spender : ROUTER_ADDRESS[chainId.value]
 
         const data = reactive({
             pendingApproval: false,
@@ -89,7 +91,7 @@ export default {
         })
 
         watchEffect(async () => {
-            data.state = await calculateState(props.token, props.owner, props.amount, ROUTER_ADDRESS[chainId.value])
+            data.state = await calculateState(props.token, props.owner, props.amount, spender)
         })
 
         watch(() => data.state, (newVal) => {
@@ -101,7 +103,6 @@ export default {
             const token = props.token
             const tokenContract = await ERC20.getTokenContract(token.address)
             const toApproveAmountToken = ParseSdkEntity.fastCreateTokenAmount(props.token, props.amount)
-            const spender = ROUTER_ADDRESS[chainId.value]
             const owner = props.owner
 
             if (data.state !== APPROVE_STATE.NOT_APPROVED) {
@@ -159,7 +160,7 @@ export default {
 
                 data.state = APPROVE_STATE.APPROVED
 
-                data.state = await calculateState(props.token, props.owner, props.amount, ROUTER_ADDRESS[chainId.value])
+                data.state = await calculateState(props.token, props.owner, props.amount, spender)
 
             } catch (error) {
                 console.log('approve error', error.message)
