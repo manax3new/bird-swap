@@ -155,6 +155,16 @@
             </el-card>
         </div>
         <br>
+        <div class="flex-center">
+            <el-card>
+                <div class="text-bold">
+                    <h3>
+                        Request recheck your transaction
+                    </h3>
+                </div>
+                <RequestFixTransaction></RequestFixTransaction>
+            </el-card>
+        </div>
     </div>
 </template>
 <script>
@@ -174,6 +184,7 @@ import contractErrorExtract from '@/lib/contractErrorExtract.js'
 import { ElNotification, ElLoading } from 'element-plus'
 import CHAIN from '@/constant/Chain'
 import ApproveButton from '@/components/ApproveButton'
+import RequestFixTransaction from '@/components/bridge/RequestFixTransaction'
 
 const FEE = '0.01'
 
@@ -182,6 +193,7 @@ export default {
         Link,
         Bottom,
         ApproveButton,
+        RequestFixTransaction,
     },
     setup() {
 
