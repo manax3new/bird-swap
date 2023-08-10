@@ -34,6 +34,9 @@
 import CHAIN from '@/constant/Chain'
 import { reactive, computed, onMounted } from 'vue'
 import SmartInterval from '@/lib/SmartInterval'
+import { apiBaseUrl } from '@/constant/config/Env'
+import axiosWrapper from '@/lib/axiosWrapper'
+import { ElNotification } from 'element-plus'
 
 export default {
     setup() {
@@ -87,12 +90,36 @@ export default {
 
             data.isOnRequest = true
 
-            console.log('form', form)
+            const res = await axiosWrapper({
+                method: 'post',
+                url: `${apiBaseUrl}/api/bot/sweep-miss-transaction`,
+                data: {
+                    chainId: form.chain.chainId,
+                    transferTransactionHash: form.transactionHash,
+                }
+            })
 
-            data.countdownSecond = getInitCountdownSecond()
+            if(res.status === 200) {
+                ElNotification({
+                    customClass: 'top-of-every-thing',
+                    type: 'success',
+                    title: 'Done',
+                    message: res.data.message,
+                    duration: 10 * 1000,
+                })
+            } else {
+                ElNotification({
+                    customClass: 'top-of-every-thing',
+                    type: 'warning',
+                    title: res.data.message,
+                    message: res.data.messageCode,
+                    duration: 10 * 1000,
+                })
+            }
 
             data.isOnRequest = false
 
+            data.countdownSecond = getInitCountdownSecond()
             startCountDown()
         }
 

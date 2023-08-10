@@ -19,3 +19,4 @@ export const isTestnet = process.env.VUE_APP_IS_TESTNET ? !!process.env.VUE_APP_
 export const infuraKey = process.env.VUE_APP_INFURA_KEY ? process.env.VUE_APP_INFURA_KEY : ''
 export const bnbTestnetRpcUrl = process.env.VUE_APP_BNB_TESTNET_RPC_URL? process.env.VUE_APP_BNB_TESTNET_RPC_URL: ''
 export const sepoliaRpcUrl = process.env.VUE_APP_SEPOLIA_RPC_URL ? process.env.VUE_APP_SEPOLIA_RPC_URL : ''
+export const apiBaseUrl = process.env.VUE_APP_API_BASE_URL ? process.env.VUE_APP_API_BASE_URL : ''
