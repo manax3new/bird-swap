@@ -37,6 +37,7 @@ import SmartInterval from '@/lib/SmartInterval'
 import { apiBaseUrl } from '@/constant/config/Env'
 import axiosWrapper from '@/lib/axiosWrapper'
 import { ElNotification } from 'element-plus'
+import moment from 'moment'
 
 export default {
     setup() {
@@ -83,7 +84,20 @@ export default {
         })
 
         const getInitCountdownSecond = () => {
-            return 10
+            const savedTimeout = localStorage.getItem('lockRequestFixTransactionTimeout')
+            if(!savedTimeout) {
+                return 0
+            }
+            const now = moment()
+            const savedTimeoutMoment = moment(parseInt(savedTimeout))
+            const diff = savedTimeoutMoment.diff(now, 'seconds')
+            return diff > 0 ? diff : 0
+        }
+
+        const setInitCountdownSecond = () => {
+            const now = moment()
+            const timeout = now.add(60, 'seconds')
+            localStorage.setItem('lockRequestFixTransactionTimeout', timeout.valueOf())
         }
 
         const request = async () => {
@@ -119,11 +133,14 @@ export default {
 
             data.isOnRequest = false
 
-            data.countdownSecond = getInitCountdownSecond()
+            setInitCountdownSecond()
             startCountDown()
         }
 
         const startCountDown = () => {
+
+            data.countdownSecond = getInitCountdownSecond()
+
             if(countDownInterval) {
                 if(countDownInterval.stopped) {
                     countDownInterval.start()
@@ -140,7 +157,6 @@ export default {
         }
 
         onMounted(() => {
-            // data.countdownSecond = getInitCountdownSecond()
             startCountDown()
         })
 
