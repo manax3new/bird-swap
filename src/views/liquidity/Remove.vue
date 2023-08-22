@@ -207,6 +207,7 @@ import contractErrorExtract from '@/lib/contractErrorExtract'
 import { allowedSlippagePercentFormat, viewTransactionOnBscUrl, isEther } from '@/lib/utils.js'
 import { ElNotification } from 'element-plus'
 import { getConstantTokens } from '@/constant/config/tokens'
+import { CAKE_TOKEN_INFO } from '@/constant/config'
 
 export default {
     components: {
@@ -373,7 +374,7 @@ export default {
                 { name: 'verifyingContract', type: 'address' },
             ]
             const domain = {
-                name: 'Bird LPs',
+                name: `${CAKE_TOKEN_INFO.nameShort} LPs`,
                 version: '1',
                 chainId: chainId.value,
                 verifyingContract: pair.liquidityToken.address,

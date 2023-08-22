@@ -4,7 +4,8 @@ import { BIG_TEN } from '@/utils/bigNumber'
 
 export const CAKE_TOKEN_INFO = {
     symbol: 'BIRD',
-    name: 'Birdswap Token'
+    name: 'Birdswap Token',
+    nameShort: 'Bird',
 }
 
 export const GELATO_NATIVE = '0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'

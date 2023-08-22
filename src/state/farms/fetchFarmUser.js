@@ -3,6 +3,7 @@ import { getMasterChefAddress, getAddress } from '@/utils/addressHelpers'
 import { multicall } from '@/utils/multicall'
 import erc20ABI from '@/constant/abi/ERC20.json'
 import masterchefABI from '@/constant/abi/masterchef.json'
+import { CAKE_TOKEN_INFO } from '@/constant/config'
 
 export const fetchFarmUserAllowances = async (account, farmsToFetch) => {
 
@@ -61,7 +62,7 @@ export const fetchFarmUserEarnings = async (account, farmsToFetch) => {
     const calls = farmsToFetch.map((farm) => {
         return {
             address: masterChefAddress,
-            name: 'pendingBird',
+            name: `pending${CAKE_TOKEN_INFO.nameShort}`,
             params: [farm.pid, account],
         }
     })

@@ -6,6 +6,7 @@ import { getMasterChefContract } from '@/utils/contractHelpers'
 import { getAddress } from '@/utils/addressHelpers'
 import { simpleRpcProvider } from '@/utils/providers'
 import BigNumber from 'bignumber.js'
+import { CAKE_TOKEN_INFO } from '@/constant/config'
 
 export default () => {
 
@@ -90,9 +91,11 @@ export default () => {
             }),
             {},
         )
+
+        const getPendingRewardMethodName = `pending${CAKE_TOKEN_INFO.nameShort}`
       
         // Cake / Cake pool
-        const pendingReward = await masterChefContract.pendingBird('0', account)
+        const pendingReward = await masterChefContract[getPendingRewardMethodName]('0', account)
       
         return { ...pendingRewards, 0: new BigNumber(pendingReward.toString()).toJSON() }
     }

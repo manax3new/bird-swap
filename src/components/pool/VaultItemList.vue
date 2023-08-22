@@ -9,7 +9,7 @@
                     <div>
                         <!-- {{farm.farm.label}} -->
                         <div class="text-medium text-bold">
-                            Earn BIRD
+                            Earn {{ CAKE_TOKEN_INFO.symbol }}
                         </div>
                         <div class="text-small">
                             Stake USDT
@@ -18,7 +18,7 @@
                 </div>
                 <div>
                     <div class="text-small text-bold">
-                        BIRD Earned
+                        {{ CAKE_TOKEN_INFO.symbol }} Earned
                     </div>
                     <div class="text-medium">
                         <!-- {{farm.earned.earnings.toLocaleString()}} -->
@@ -30,7 +30,7 @@
                 </div>
                 <div>
                     <div class="text-small text-bold">
-                        BIRD staked
+                        {{ CAKE_TOKEN_INFO.symbol }} staked
                     </div>
                     <div>
                         0.0
@@ -53,7 +53,7 @@
                         Total staked
                     </div>
                     <div>
-                        10 BIRD
+                        10 {{ CAKE_TOKEN_INFO.symbol }}
                     </div>
                 </div>
                 <div>
@@ -83,7 +83,7 @@
                     <div style="width: 250px;">
                         <div class="text-small">
                             <!-- {{ CAKE_TOKEN_INFO.symbol }} EARNED -->
-                            BIRD EARN
+                            {{ CAKE_TOKEN_INFO.symbol }} EARN
                         </div>
                         <div class="flex justify-content-space-between align-items-center">
                             <div>
@@ -119,6 +119,7 @@
     
     import { QuestionFilled, ArrowDown, ArrowUp, Link, Plus, Minus } from '@element-plus/icons-vue'
     import { reactive, computed } from 'vue'
+    import { CAKE_TOKEN_INFO } from '@/constant/config'
     
     export default {
         props: [
@@ -152,6 +153,7 @@
                 state,
                 isStaked,
                 toggleShowDetail,
+                CAKE_TOKEN_INFO,
             }
         },
     }
