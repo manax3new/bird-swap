@@ -82,7 +82,7 @@
             </div>
             <br/>
             <div class="flex justify-content-center">
-                <el-link type="primary" href="#" target="_blank">
+                <el-link type="primary" :href="getLpTokenUrl" target="_blank">
                     Get {{lpSymbol}} &nbsp;<el-icon><Link /></el-icon>
                 </el-link>
             </div>
@@ -152,6 +152,7 @@ export default {
         'farm',
         'lpLabel',
         'displayApr',
+        'getLpTokenUrl',
     ],
     components: {
         StakedLP,

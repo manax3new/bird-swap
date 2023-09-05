@@ -114,7 +114,11 @@
             </el-card>
             <el-card>
                 <div style="width: 250px;">
-                    <StakedAction :farm="farm.details" :lpLabel="lpLabel" :displayApr="farm.apr.value"></StakedAction>
+                    <StakedAction 
+                    :farm="farm.details" 
+                    :lpLabel="lpLabel" 
+                    :displayApr="farm.apr.value"
+                    :getLpTokenUrl="getLpTokenUrl"></StakedAction>
                 </div>
             </el-card>
         </div>
